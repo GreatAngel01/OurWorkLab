@@ -1,5 +1,6 @@
 package app.models;
 
 public class Room {
-    private Node[][] nodes = null;
+    private int leftUp = 0;
+    private int rightDown = 0;
 }
