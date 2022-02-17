@@ -5,4 +5,5 @@ public enum NodeState {
     NONE,
     EXIT,
     BLOCK,
+    SLOWDOWN,
 }
