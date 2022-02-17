@@ -4,4 +4,5 @@ public enum NodeState {
     TELEPORT,
     NONE,
     EXIT,
+    BLOCK,
 }
