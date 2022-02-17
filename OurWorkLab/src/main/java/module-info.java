@@ -3,6 +3,6 @@ module app {
     requires javafx.fxml;
 
 
-    opens app to javafx.fxml;
-    exports app;
+    opens ru.vsu.app to javafx.fxml;
+    exports ru.vsu.app;
 }
