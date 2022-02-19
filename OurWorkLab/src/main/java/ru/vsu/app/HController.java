@@ -23,9 +23,8 @@ public class HController {
 
     public void createMenu(Stage stage) {
 
-
         stage.setResizable(false);
-
+        stage.getIcons().add(graphicData.getAppIcon());
         Background background = new Background(new BackgroundImage(graphicData.getMenuBackground(), null, null, BackgroundPosition.CENTER, null));
         Canvas canvas = new Canvas(700, 600);
         Group group = new Group();
@@ -38,7 +37,7 @@ public class HController {
         drawName(canvas);
 
         //Кнопка старта
-        Button start = drawButton(graphicData.getMenuButtonEntered(),graphicData.getMenuButtonExited(), 250, 200);
+        Button start = drawButton(graphicData.getButtonStartOn(), graphicData.getButtonStartOff(), 250, 200);
 
 
         start.onActionProperty().set(new EventHandler<ActionEvent>() {
@@ -49,7 +48,7 @@ public class HController {
         });
 
         //Кнопка настроек
-        Button configure = drawButton(graphicData.getMenuButtonEntered(),graphicData.getMenuButtonExited(), 250, 280);
+        Button configure = drawButton(graphicData.getButtonConfOn(), graphicData.getButtonConfOff(), 250, 280);
         configure.onActionProperty().set(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -58,11 +57,13 @@ public class HController {
         });
 
         //Кнопка выхода
-        Button exit = drawButton(graphicData.getMenuButtonEntered(), graphicData.getMenuButtonExited(), 250, 360);
+        Button exit = drawButton(graphicData.getButtonExitOn(), graphicData.getButtonExitOff(), 250, 360);
         exit.onActionProperty().set(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("EXIT");
+                System.exit(1);
+                ;
             }
         });
 
@@ -77,19 +78,17 @@ public class HController {
     }
 
     private void drawName(Canvas canvas) {
-        synchronized (canvas) {
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            Image image = new Image(String.valueOf(getClass().getResource("/graphic/menu/gamename.png")));
-            Timer timer = new Timer();
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    gc.setGlobalAlpha(0.02);
-                    gc.drawImage(image, 60, 80);
-                }
-            };
-            timer.schedule(timerTask, 100, 100);
-        }
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                gc.setGlobalAlpha(0.02);
+                gc.drawImage(graphicData.getMenuGameName(), 60, 80);
+            }
+        };
+        timer.schedule(timerTask, 100, 100);
+
     }
 
     private void drawGif(Pane pane, Image image, int x, int y) {
@@ -105,7 +104,7 @@ public class HController {
         button.setLayoutX(x);
         button.setLayoutY(y);
         button.setPadding(Insets.EMPTY);
-        button.setPrefSize(215, 100);
+        button.setPrefSize(215, 50);
         button.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {

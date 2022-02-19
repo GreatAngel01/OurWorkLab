@@ -1,10 +1,10 @@
 package ru.vsu.app.models;
 
 public class Room {
-    private final int leftUpX;
-    private final int leftUpY;
-    private final int rightDownX;
-    private final int rightDownY;
+    private int leftUpX = -1 ;
+    private int leftUpY = -1 ;;
+    private int rightDownX = -1 ;;
+    private int rightDownY = -1 ;;
 
     public Room(int leftUpX, int leftUpY, int rightDownX, int rightDownY) {
         this.leftUpX = leftUpX;

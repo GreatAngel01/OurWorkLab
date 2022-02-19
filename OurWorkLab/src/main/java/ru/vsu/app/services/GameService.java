@@ -1,6 +1,7 @@
 package ru.vsu.app.services;
 
 
+import ru.vsu.app.models.Directions;
 import ru.vsu.app.models.GameCharacter;
 import ru.vsu.app.models.GameMap;
 import ru.vsu.app.models.GameMapType;
@@ -12,7 +13,7 @@ public class GameService {
         gameData.setCharacter(new GameCharacter("NewHuman"));
         GameMapGenerator generator = new GameMapGenerator();
         for (int i = 0; i < wsize; i++) {
-            GameMap map = generator.generate(mheight, mweight, randomMapType());
+            GameMap map = generator.generate(mheight, mweight, randomMapType(), Directions.East,Directions.West);
             gameData.getWorld()[i] = map;
         }
         startGame();
