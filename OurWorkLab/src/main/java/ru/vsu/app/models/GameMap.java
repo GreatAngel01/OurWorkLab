@@ -21,7 +21,7 @@ public class GameMap {
         return map;
     }
 
-    public void setMap(Node[][] map, int weight) {
+    public void setMap(Node[][] map) {
         this.map = map;
     }
 

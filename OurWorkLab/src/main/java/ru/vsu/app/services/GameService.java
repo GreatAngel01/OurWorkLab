@@ -5,7 +5,6 @@ import ru.vsu.app.models.GameCharacter;
 import ru.vsu.app.models.GameMap;
 import ru.vsu.app.models.GameMapType;
 import ru.vsu.app.support.GameData;
-import ru.vsu.app.support.GameMapGenerator;
 
 public class GameService {
     public boolean createGame(int mheight, int mweight, int wsize) {
