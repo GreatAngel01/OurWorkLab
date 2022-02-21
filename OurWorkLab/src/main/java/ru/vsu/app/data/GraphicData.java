@@ -1,9 +1,11 @@
-package ru.vsu.app.support;
+package ru.vsu.app.data;
 
 import javafx.scene.image.Image;
 
 
 public class GraphicData {
+
+    //Menu open
     final private Image appIcon = new Image(String.valueOf(getClass().getResource("/graphic/menu/appIcon.png")));
     final private Image menuBackground = new Image(String.valueOf(getClass().getResource("/graphic/menu/menuStatic.png")));
     final private Image menuMonsters = new Image(String.valueOf(getClass().getResource("/graphic/menu/monster.gif")));
@@ -21,6 +23,21 @@ public class GraphicData {
 
     final private Image buttonConfOn = new Image(String.valueOf(getClass().getResource("/graphic/menu/buttons/buttonConfOn.png")));
     final private Image buttonConfOff = new Image(String.valueOf(getClass().getResource("/graphic/menu/buttons/buttonConfOff.png")));
+    //Menu close
+
+
+    //Under open
+    final private Image underBlock = new Image(String.valueOf(getClass().getResource("/graphic/underground/block.png")));
+    final private Image underNone = new Image(String.valueOf(getClass().getResource("/graphic/underground/none.png")));
+    final private Image underExit = new Image(String.valueOf(getClass().getResource("/graphic/underground/exit.png")));
+    //Under close
+
+
+    //Character
+    final private Image character = new Image(String.valueOf(getClass().getResource("/graphic/character.png")));
+
+    //
+
 
     public Image getMenuButtonEntered() {
         return menuButtonEntered;
@@ -72,5 +89,21 @@ public class GraphicData {
 
     public Image getAppIcon() {
         return appIcon;
+    }
+
+    public Image getUnderBlock() {
+        return underBlock;
+    }
+
+    public Image getUnderNone() {
+        return underNone;
+    }
+
+    public Image getUnderExit() {
+        return underExit;
+    }
+
+    public Image getCharacter() {
+        return character;
     }
 }

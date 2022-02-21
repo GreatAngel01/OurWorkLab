@@ -1,10 +1,9 @@
 package ru.vsu.app.models;
 
 public class Node {
-
     private NodeState state = null;
 
-    public Node( NodeState state) {
+    public Node(NodeState state) {
         this.state = state;
     }
 

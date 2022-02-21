@@ -2,10 +2,12 @@ package ru.vsu.app.services;
 
 import ru.vsu.app.models.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class GameMapGenerator {
-    public static GameMap generate(int height, int width, GameMapType type, Directions start, Directions exit) {
+    public static GameMap generate(int height, int width, GameMapType type, Direction start, Direction exit) {
         if (type == GameMapType.UNDERGROUND) {
             Random random = new Random();
             GameMap gameMap = createMap(height, width);
@@ -46,15 +48,15 @@ public class GameMapGenerator {
             }
             int tempX;
             int tempY;
-            if (start == Directions.East) {
+            if (start == Direction.East) {
                 tempX = width - 1;
                 tempY = random.nextInt(1, height - 2);
             } else {
-                if (start == Directions.North) {
+                if (start == Direction.North) {
                     tempX = random.nextInt(1, width - 2);
                     tempY = 0;
                 } else {
-                    if (start == Directions.South) {
+                    if (start == Direction.South) {
                         tempX = random.nextInt(1, width - 2);
                         tempY = height - 1;
                     } else {
@@ -63,18 +65,20 @@ public class GameMapGenerator {
                     }
                 }
             }
+            Map<Node, Direction> exits = new HashMap<>();
+            exits.put(gameMap.getMap()[tempY][tempX], start);
             cutExitWay(gameMap, tempX, tempY, rooms);
             gameMap.getMap()[tempY][tempX].setState(NodeState.EXIT);
 
-            if (exit == Directions.East) {
+            if (exit == Direction.East) {
                 tempX = width - 1;
                 tempY = random.nextInt(1, height - 2);
             } else {
-                if (exit == Directions.North) {
+                if (exit == Direction.North) {
                     tempX = random.nextInt(1, width - 2);
                     tempY = 0;
                 } else {
-                    if (exit == Directions.South) {
+                    if (exit == Direction.South) {
                         tempX = random.nextInt(1, width - 2);
                         tempY = height - 1;
                     } else {
@@ -85,11 +89,15 @@ public class GameMapGenerator {
             }
 
             cutExitWay(gameMap, tempX, tempY, rooms);
-            gameMap.getMap()[tempY][tempX].setState(NodeState.EXIT);
 
-            test(gameMap);
+            gameMap.getMap()[tempY][tempX].setState(NodeState.EXIT);
+            exits.put(gameMap.getMap()[tempY][tempX], exit);
+            gameMap.setExits(exits);
+            
             return gameMap;
         }
+
+
         if (type == GameMapType.TERRAIN) {
             return null;
         }
@@ -126,8 +134,6 @@ public class GameMapGenerator {
             nodes[i][outputX].setState(NodeState.NONE);
         }
         gameMap.setMap(nodes);
-        //test(gameMap);
-
     }
 
     public static void cutRoom(GameMap gameMap, Room room) {
@@ -137,7 +143,6 @@ public class GameMapGenerator {
                 nodes[j][i].setState(NodeState.NONE);
             }
         }
-        test(gameMap);
         gameMap.setMap(nodes);
     }
 
@@ -171,7 +176,6 @@ public class GameMapGenerator {
             nodes[i][outputX].setState(NodeState.NONE);
         }
         gameMap.setMap(nodes);
-        //test(gameMap);
     }
 
     public static GameMap createMap(int height, int width) {
@@ -181,27 +185,6 @@ public class GameMapGenerator {
                 miniMap[i][j] = new Node(NodeState.BLOCK);
             }
         }
-        return new GameMap(height, width, miniMap);
-    }
-
-    public static void test(GameMap gameMap) {
-        Node[][] nodes = gameMap.getMap();
-
-        for (int i = 0; i < nodes.length; i++) {
-            for (int j = 0; j < nodes[0].length; j++) {
-                if (nodes[i][j].getState() == NodeState.BLOCK) {
-                    System.out.print("0");
-                } else {
-                    if (nodes[i][j].getState() == NodeState.EXIT) {
-                        System.out.print("e");
-                    } else {
-                        System.out.print(" ");
-                    }
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
+        return new GameMap(miniMap);
     }
 }

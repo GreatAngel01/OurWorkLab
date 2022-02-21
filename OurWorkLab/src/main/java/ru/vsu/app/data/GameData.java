@@ -1,17 +1,14 @@
-package ru.vsu.app.support;
+package ru.vsu.app.data;
 
 import ru.vsu.app.models.GameCharacter;
 import ru.vsu.app.models.GameMap;
 import ru.vsu.app.models.Node;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class GameData {
     private GameMap[] world;
     private GameCharacter character;
-    private Map<GameCharacter, Node> position = new HashMap<>();
-
+    private Node charaPositionNode;
+    private GameMap charaPositionMap;
 
 
     public GameMap[] getWorld() {
@@ -30,11 +27,19 @@ public class GameData {
         this.character = character;
     }
 
-    public Map<GameCharacter, Node> getPosition() {
-        return position;
+    public Node getCharaPositionNode() {
+        return charaPositionNode;
     }
 
-    public void setPosition(Map<GameCharacter, Node> position) {
-        this.position = position;
+    public void setCharaPositionNode(Node charaPositionNode) {
+        this.charaPositionNode = charaPositionNode;
+    }
+
+    public GameMap getCharaPositionMap() {
+        return charaPositionMap;
+    }
+
+    public void setCharaPositionMap(GameMap charaPositionMap) {
+        this.charaPositionMap = charaPositionMap;
     }
 }

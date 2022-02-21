@@ -1,35 +1,67 @@
 package ru.vsu.app.services;
 
 
-import ru.vsu.app.models.Directions;
-import ru.vsu.app.models.GameCharacter;
+import ru.vsu.app.data.GameData;
+import ru.vsu.app.models.Direction;
 import ru.vsu.app.models.GameMap;
 import ru.vsu.app.models.GameMapType;
-import ru.vsu.app.support.GameData;
+
+import java.util.Random;
 
 public class GameService {
-    public boolean createGame(int mheight, int mweight, int wsize) {
-        GameData gameData = new GameData();
-        gameData.setCharacter(new GameCharacter("NewHuman"));
-        GameMapGenerator generator = new GameMapGenerator();
+    final private GameData gameData;
+
+    public GameService(GameData gameData) {
+        this.gameData = gameData;
+
+    }
+
+    public boolean createGame(int mheight, int mwidth, int wsize) {
+        gameData.setWorld(new GameMap[wsize]);
         for (int i = 0; i < wsize; i++) {
-            GameMap map = generator.generate(mheight, mweight, randomMapType(), Directions.East,Directions.West);
-            gameData.getWorld()[i] = map;
+            gameData.getWorld()[i] = GameMapGenerator.generate(mheight, mwidth, GameMapType.UNDERGROUND, Direction.North, Direction.South);
         }
-        startGame();
         return true;
     }
 
     private boolean startGame() {
+
         return true;
     }
 
 
-    private GameMapType randomMapType() {
-        if (Math.random() * 100 % 2 == 0)
-            return GameMapType.UNDERGROUND;
-        return GameMapType.TERRAIN;
+    private GameMap[] generateWorld(int mheight, int mwidth, int wsize) {
+
+        return null;
     }
+
+    private Direction randomDirection() {
+        Random random = new Random();
+        int value = random.nextInt(1, 4);
+        if (value == 1)
+            return Direction.North;
+        if (value == 2)
+            return Direction.South;
+        if (value == 3)
+            return Direction.West;
+        if (value == 4)
+            return Direction.East;
+        return null;
+    }
+
+    private GameMapType randomMapType() {
+        Random random = new Random();
+        int value = 1;// random.nextInt(1, 1 /* 2 */);
+        if (value == 1)
+            return GameMapType.UNDERGROUND;
+        /*
+        if (value == 2)
+            return GameMapType.TERRAIN;
+           
+         */
+        return null;
+    }
+
 }
 
 

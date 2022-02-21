@@ -1,6 +1,6 @@
 package ru.vsu.app.models;
 
-public enum Directions {
+public enum Direction {
     North,
     South,
     West,

@@ -5,15 +5,13 @@ import java.util.Map;
 
 public class GameMap {
     private int height = 0;
-    private int weight = 0;
+    private int width = 0;
     private Node[][] map = null;
     private GameMapType type;
-    private Map<Node, GameMap> exits = new HashMap<>();
+    private Map<Node, Direction> exits = new HashMap<>();
 
-    public GameMap(int height, int weight, Node[][] map) {
-        this.height = height;
-        this.weight = weight;
-        this.map = map;
+    public GameMap(Node[][] map) {
+        setMap(map);
     }
 
 
@@ -22,6 +20,8 @@ public class GameMap {
     }
 
     public void setMap(Node[][] map) {
+        this.height = map.length;
+        this.width = map[0].length;
         this.map = map;
     }
 
@@ -33,11 +33,22 @@ public class GameMap {
         this.type = type;
     }
 
-     public Map<Node, GameMap> getExits() {
-          return exits;
-     }
+    public Map<Node, Direction> getExits() {
+        return exits;
+    }
 
-     public void setExits(Map<Node, GameMap> exits) {
-          this.exits = exits;
-     }
+    public void setExits(Map<Node, Direction> exits) {
+        this.exits = exits;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+
+    public int getWidth() {
+        return width;
+    }
+
+
 }
