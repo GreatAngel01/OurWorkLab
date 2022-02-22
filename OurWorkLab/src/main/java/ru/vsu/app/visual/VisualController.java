@@ -13,55 +13,55 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import ru.vsu.app.data.GameData;
-import ru.vsu.app.data.GraphicData;
+import ru.vsu.app.GameBuilder;
+import ru.vsu.app.data.ImageFactory;
 import ru.vsu.app.models.GameMap;
 import ru.vsu.app.models.NodeState;
-import ru.vsu.app.services.GameService;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class HController {
-    private final GraphicData graphicData = new GraphicData();
-    private final GameData gameData;
-    private final GameService gameService;
-    private Stage stage = null;
+public class VisualController {
+    private final GameBuilder builder;
+    private final ImageFactory images;
+    private final Stage stage;
     private Pane nowPane = null;
 
-    public HController(Stage stage, GameData data, GameService service) {
-        this.gameService = service;
-        this.stage = stage;
-        this.gameData = data;
+    public VisualController(GameBuilder builder) {
+        this.builder = builder;
+        this.stage = new Stage();
+        this.images = new ImageFactory();
         stage.setResizable(false);
-        stage.getIcons().add(graphicData.getAppIcon());
+        stage.getIcons().add(images.getImage("/graphic/menu/appIcon.png"));
     }
 
 
     public void createMenu() {
-        Background background = new Background(new BackgroundImage(graphicData.getMenuBackground(), null, null, BackgroundPosition.CENTER, null));
+        Background background = new Background(new BackgroundImage(images.getImage("/graphic/menu/menuStatic.png"), null, null, BackgroundPosition.CENTER, null));
         Canvas canvas = new Canvas(700, 600);
         Group group = new Group();
         this.nowPane = new Pane(canvas, group);
         nowPane.setBackground(background);
 
-        drawGif(nowPane, graphicData.getMenuEye(), 75, 90);
-        drawGif(nowPane, graphicData.getMenuMonsters(), 60, 435);
+        drawGif(nowPane, images.getImage("/graphic/menu/eye.gif"), 75, 90);
+        drawGif(nowPane, images.getImage("/graphic/menu/monster.gif"), 60, 435);
         drawName(canvas);
 
         //Button start
-        Button start = drawButton(graphicData.getButtonStartOn(), graphicData.getButtonStartOff(), 250, 200);
+        Button start = drawButton(images.getImage("/graphic/menu/buttons/buttonStartOn.png"),
+                images.getImage("/graphic/menu/buttons/buttonStartOff.png"), 250, 200);
         start.onActionProperty().set(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                gameService.createGame(20, 20, 2);
+                builder.getGameService().createGame(20, 20, 2);
                 createGameWindow();
             }
         });
 
         //Button config
-        Button configure = drawButton(graphicData.getButtonConfOn(), graphicData.getButtonConfOff(), 250, 280);
+        Button configure = drawButton(images.getImage("/graphic/menu/buttons/buttonConfOn.png"),
+                images.getImage("/graphic/menu/buttons/buttonConfOff.png"), 250, 280);
         configure.onActionProperty().set(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -70,7 +70,8 @@ public class HController {
         });
 
         //Button exit
-        Button exit = drawButton(graphicData.getButtonExitOn(), graphicData.getButtonExitOff(), 250, 360);
+        Button exit = drawButton(images.getImage("/graphic/menu/buttons/buttonExitOn.png"),
+                images.getImage("/graphic/menu/buttons/buttonExitOff.png"), 250, 360);
         exit.onActionProperty().set(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -89,16 +90,16 @@ public class HController {
     }
 
     public void createGameWindow() {
-        GameMap map = gameData.getWorld()[0];
+        GameMap map = builder.getGameData().getWorld()[0];
         Canvas canvas = new Canvas(map.getHeight() * 24, map.getWidth() * 24);
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getMap()[j][i].getState() == NodeState.BLOCK)
-                    canvas.getGraphicsContext2D().drawImage(graphicData.getUnderBlock(), i * 24, j * 24);
+                    canvas.getGraphicsContext2D().drawImage(images.getImage("/graphic/underground/block.png"), i * 24, j * 24);
                 if (map.getMap()[j][i].getState() == NodeState.NONE)
-                    canvas.getGraphicsContext2D().drawImage(graphicData.getUnderNone(), i * 24, j * 24);
+                    canvas.getGraphicsContext2D().drawImage(images.getImage("/graphic/underground/none.png"), i * 24, j * 24);
                 if (map.getMap()[j][i].getState() == NodeState.EXIT)
-                    canvas.getGraphicsContext2D().drawImage(graphicData.getUnderExit(), i * 24, j * 24);
+                    canvas.getGraphicsContext2D().drawImage(images.getImage("/graphic/underground/exit.png"), i * 24, j * 24);
             }
         }
         this.nowPane = new Pane(canvas);
@@ -107,6 +108,7 @@ public class HController {
     }
 
     private void drawGameField(Canvas canvas) {
+
     }
 
     private void drawName(Canvas canvas) {
@@ -116,7 +118,7 @@ public class HController {
             @Override
             public void run() {
                 gc.setGlobalAlpha(0.02);
-                gc.drawImage(graphicData.getMenuGameName(), 60, 80);
+                gc.drawImage(images.getImage("/graphic/menu/gameName.png"), 60, 80);
             }
         };
         timer.schedule(timerTask, 100, 100);
@@ -140,19 +142,17 @@ public class HController {
         button.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                button.setBackground(new Background(new BackgroundImage(mouseEntered,
-                        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+                button.setBackground(new Background(new BackgroundImage(mouseEntered, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
             }
         });
         button.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                button.setBackground(new Background(new BackgroundImage(mouseExited,
-                        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+                button.setBackground(new Background(new BackgroundImage(mouseExited, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
             }
         });
         return button;
     }
-
-
 }
+
+

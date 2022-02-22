@@ -93,7 +93,7 @@ public class GameMapGenerator {
             gameMap.getMap()[tempY][tempX].setState(NodeState.EXIT);
             exits.put(gameMap.getMap()[tempY][tempX], exit);
             gameMap.setExits(exits);
-            
+
             return gameMap;
         }
 

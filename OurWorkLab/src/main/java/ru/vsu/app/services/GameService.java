@@ -13,7 +13,6 @@ public class GameService {
 
     public GameService(GameData gameData) {
         this.gameData = gameData;
-
     }
 
     public boolean createGame(int mheight, int mwidth, int wsize) {
