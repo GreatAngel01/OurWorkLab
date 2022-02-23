@@ -3,4 +3,3 @@
 Скидывайте в наш дискорд  
 Если нужно скачать полный репозиторий - Code-Download ZIP  
 ![](https://github.com/GreatAngel01/OurWorkLab/blob/main/showMenu.png)
-![](https://github.com/GreatAngel01/OurWorkLab/blob/main/structure.jpg)
