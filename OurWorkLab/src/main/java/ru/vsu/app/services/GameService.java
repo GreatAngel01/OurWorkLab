@@ -2,36 +2,68 @@ package ru.vsu.app.services;
 
 
 import ru.vsu.app.data.GameData;
-import ru.vsu.app.models.Direction;
-import ru.vsu.app.models.GameMap;
-import ru.vsu.app.models.GameMapType;
+import ru.vsu.app.help.Coordinate;
+import ru.vsu.app.models.creatures.Enemy;
+import ru.vsu.app.models.creatures.GameCharacter;
+import ru.vsu.app.models.map.Direction;
+import ru.vsu.app.models.map.GameMap;
+import ru.vsu.app.models.map.GameMapType;
+import ru.vsu.app.models.map.NodeState;
+import ru.vsu.app.visual.EnemyDrawer;
 
-import java.util.Random;
+import java.util.*;
 
-public class GameService {
-    final private GameData gameData;
+public record GameService(GameData gameData) {
 
-    public GameService(GameData gameData) {
-        this.gameData = gameData;
-    }
 
-    public boolean createGame(int mheight, int mwidth, int wsize) {
-        gameData.setWorld(new GameMap[wsize]);
-        for (int i = 0; i < wsize; i++) {
-            gameData.getWorld()[i] = GameMapGenerator.generate(mheight, mwidth, GameMapType.UNDERGROUND, Direction.North, Direction.South);
-        }
+    public boolean createGame() {
+        gameData.setCharacter(new GameCharacter(4, 6, 4, "Lolik"));
+        generateWorld();
+        startGame();
+        createEnemy();
         return true;
     }
 
     private boolean startGame() {
-
+        gameData.setCharaPositionMap(gameData.getWorld()[0]);
+        for (int i = 0; i < gameData.getCharaPositionMap().getHeight(); i++) {
+            for (int j = 0; j < gameData.getCharaPositionMap().getHeight(); j++) {
+                if (gameData.getCharaPositionMap().getMap()[i][j].getState() == NodeState.NONE) {
+                    gameData.setCharaPos(new Coordinate(i, j));
+                }
+            }
+        }
         return true;
     }
 
 
-    private GameMap[] generateWorld(int mheight, int mwidth, int wsize) {
+    private void generateWorld() {
+        for (int i = 0; i < gameData.getWorld().length; i++) {
+            GameMapGenerator gameMapGenerator = new GameMapGenerator(gameData);
+            gameData.getWorld()[i] = gameMapGenerator.generate(gameData.getMapSize(), gameData.getMapSize(), GameMapType.UNDERGROUND, Direction.North, Direction.South);
+        }
+        gameData.setCharaPos(new Coordinate(1, 1));
 
-        return null;
+    }
+
+    private void createEnemy() {
+        HashMap<GameMap, List<Enemy>> map = new HashMap<>();
+        Enemy enemy1 = new Enemy(4, 2, 2);
+        Enemy enemy2 = new Enemy(4, 2, 2);
+        List<Enemy> list = new ArrayList<>();
+        list.add(enemy1);
+        list.add(enemy2);
+        map.put(gameData.getCharaPositionMap(), list);
+        gameData.setEnemyPosMap(map);
+
+        for (int i = 0; i < gameData.getCharaPositionMap().getHeight(); i++) {
+            for (int j = 0; j < gameData.getCharaPositionMap().getHeight(); j++) {
+                if (gameData.getCharaPositionMap().getMap()[i][j].getState() == NodeState.NONE) {
+                    gameData.getEnemyPosCor().put(enemy1, new Coordinate(i, j));
+                    gameData.getEnemyPosCor().put(enemy2, new Coordinate(i, j));
+                }
+            }
+        }
     }
 
     private Direction randomDirection() {
