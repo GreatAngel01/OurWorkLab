@@ -1,6 +1,7 @@
 package ru.vsu.app.models.map;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameMap {
@@ -9,9 +10,11 @@ public class GameMap {
     private Node[][] map = null;
     private GameMapType type;
     private Map<Node, Direction> exits = new HashMap<>();
+    private List<Room> rooms ;
 
-    public GameMap(Node[][] map) {
+    public GameMap(Node[][] map,List<Room> rooms) {
         setMap(map);
+        this.rooms = rooms;
     }
 
 
@@ -51,4 +54,11 @@ public class GameMap {
     }
 
 
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
 }

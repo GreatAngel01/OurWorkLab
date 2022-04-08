@@ -13,7 +13,8 @@ public record GameMapGenerator(GameData gameData) {
 
             // создание комнат с помощью дерева
             Tree tree = new Tree(new NodeTree(new int[] {2, 2}, new int[] {width - 2, height - 2}, null));
-            ArrayList<Room> list = new ArrayList<>();
+            List<Room> list = new ArrayList<>();
+            gameMap.setRooms(list);
             createRoom(gameMap, tree.getHead(), list, height/5, width/5, height/20, width/20);
             NodeTree temp = tree.getHead();
             while (temp.getLeft() != null) {
@@ -153,7 +154,7 @@ public record GameMapGenerator(GameData gameData) {
         gameMap.setMap(nodes);
     }
 
-    public void createRoom(GameMap gameMap, NodeTree node, ArrayList<Room> list, int maxHeightRoom, int maxWidthRoom, int minHeightRoom, int minWidthRoom) {
+    public void createRoom(GameMap gameMap, NodeTree node, List<Room> list, int maxHeightRoom, int maxWidthRoom, int minHeightRoom, int minWidthRoom) {
         Random random = new Random();
         int height = node.getOutputPoint()[1] - node.getInputPoint()[1];
         int width = node.getOutputPoint()[0] - node.getInputPoint()[0];
@@ -187,13 +188,13 @@ public record GameMapGenerator(GameData gameData) {
         }
     }
 
-    private void createWay(GameMap gameMap, ArrayList<Room> list) {
+    private void createWay(GameMap gameMap, List<Room> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             cutWay(gameMap, list.get(i), list.get(i + 1));
         }
     }
 
-    private boolean splitWidth(GameMap gameMap, ArrayList<Room> list, NodeTree node, int width,
+    private boolean splitWidth(GameMap gameMap, List<Room> list, NodeTree node, int width,
                                int maxHeightRoom, int maxWidthRoom, int minHeightRoom, int minWidthRoom) {
         //Истина, если уже не делится
         Random random = new Random();
@@ -215,7 +216,7 @@ public record GameMapGenerator(GameData gameData) {
         }
         return true;
     }
-    private boolean splitHeight(GameMap gameMap, ArrayList<Room> list, NodeTree node, int height,
+    private boolean splitHeight(GameMap gameMap, List<Room> list, NodeTree node, int height,
                                 int maxHeightRoom, int maxWidthRoom, int minHeightRoom, int minWidthRoom) {
         //Истина, если уже не делится
         Random random = new Random();
@@ -245,26 +246,7 @@ public record GameMapGenerator(GameData gameData) {
                 miniMap[i][j] = new Node(NodeState.BLOCK);
             }
         }
-        return new GameMap(miniMap);
-    }
-
-    public void printMap(GameMap gameMap, int height, int width) {
-        Node[][] map = gameMap.getMap();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (map[i][j].getState() == NodeState.NONE) {
-                    System.out.print(' ');
-                } else {
-                    System.out.print('*');
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
-        System.out.println("------------------------------------------------------------------------------------------------------------------");
-        System.out.println();
-        System.out.println();
+        return new GameMap(miniMap,new ArrayList<>());
     }
 
     private class Tree{

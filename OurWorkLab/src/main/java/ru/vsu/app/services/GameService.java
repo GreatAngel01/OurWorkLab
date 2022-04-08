@@ -6,12 +6,14 @@ import ru.vsu.app.help.Coordinate;
 import ru.vsu.app.models.creatures.Enemy;
 import ru.vsu.app.models.creatures.GameCharacter;
 import ru.vsu.app.models.map.Direction;
-import ru.vsu.app.models.map.GameMap;
 import ru.vsu.app.models.map.GameMapType;
 import ru.vsu.app.models.map.NodeState;
-import ru.vsu.app.visual.EnemyDrawer;
+import ru.vsu.app.models.map.Room;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public record GameService(GameData gameData) {
 
@@ -47,23 +49,14 @@ public record GameService(GameData gameData) {
     }
 
     private void createEnemy() {
-        HashMap<GameMap, List<Enemy>> map = new HashMap<>();
-        Enemy enemy1 = new Enemy(4, 2, 2);
-        Enemy enemy2 = new Enemy(4, 2, 2);
-        List<Enemy> list = new ArrayList<>();
-        list.add(enemy1);
-        list.add(enemy2);
-        map.put(gameData.getCharaPositionMap(), list);
-        gameData.setEnemyPosMap(map);
-
-        for (int i = 0; i < gameData.getCharaPositionMap().getHeight(); i++) {
-            for (int j = 0; j < gameData.getCharaPositionMap().getHeight(); j++) {
-                if (gameData.getCharaPositionMap().getMap()[i][j].getState() == NodeState.NONE) {
-                    gameData.getEnemyPosCor().put(enemy1, new Coordinate(i, j));
-                    gameData.getEnemyPosCor().put(enemy2, new Coordinate(i, j));
-                }
-            }
+        List<Enemy> enemies = new ArrayList<>();
+        for (Room room : gameData.getCharaPositionMap().getRooms()) {
+            Enemy enemy = new Enemy(4, 4, 2);
+            gameData.getEnemyPosCor().put(enemy, new Coordinate(room.getLeftUpY(), room.getLeftUpX()));
+            enemies.add(enemy);
         }
+        gameData.setEnemyPosMap(new HashMap<>());
+        gameData.getEnemyPosMap().put(gameData.getCharaPositionMap(), enemies);
     }
 
     private Direction randomDirection() {

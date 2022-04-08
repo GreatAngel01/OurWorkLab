@@ -1,16 +1,21 @@
 package ru.vsu.app.visual;
 
 
+import javafx.event.EventHandler;
 import javafx.scene.Camera;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import ru.vsu.app.data.VisualData;
 import ru.vsu.app.models.creatures.Enemy;
 import ru.vsu.app.models.map.GameMap;
 import ru.vsu.app.models.map.NodeState;
 import ru.vsu.app.services.EnemyServices;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,9 +42,8 @@ public record GameDrawer(VisualData visualData) {
         visualData.setCharaCanvas(chaCanvas);
         visualData.getNowPane().getChildren().add(chaCanvas);
 
-
         for (Enemy enemy : visualData.getBuilder().getGameData().getEnemyPosMap().get(visualData.getBuilder().getGameData().getCharaPositionMap())) {
-            visualData.getEnemyCanvases().put(enemy,new Canvas(50,50));
+            visualData.getEnemyCanvases().put(enemy, new Canvas(50, 50));
             visualData.getNowPane().getChildren().add(visualData.getEnemyCanvases().get(enemy));
         }
         CharacterDrawer drawer = new CharacterDrawer(visualData);
